@@ -2,29 +2,24 @@ package gofinance
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
-const apiHgFinancePrefix = "https://api.hgbrasil.com/finance"
+const URL = "https://api.hgbrasil.com/finance"
 
 func GetQuotations(key string) (*DataQuotation, error) {
+	url := fmt.Sprintf("%s/quotations?key=%s", URL, key)
 
-	url := fmt.Sprintf("%s/quotations?key=%s", apiHgFinancePrefix, key)
-
-	req, err := http.NewRequest("GET", url, nil)
+	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("Content-type", "application/json")
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Oops, error on get quotations")
 	}
 
 	defer resp.Body.Close()
@@ -33,32 +28,26 @@ func GetQuotations(key string) (*DataQuotation, error) {
 		return nil, err
 	}
 
-	var data *DataQuotation
+	var dataQuotation *DataQuotation
 
-	err = json.Unmarshal(body, &data)
+	err = json.Unmarshal(body, &dataQuotation)
 	if err != nil {
 		return nil, err
 	}
 
-	return data, nil
+	return dataQuotation, nil
 }
 
 func GetTaxes(key string) (*DataTaxe, error) {
+	url := fmt.Sprintf("%s/taxes?key=%s", URL, key)
 
-	url := fmt.Sprintf("%s/taxes?key=%s", apiHgFinancePrefix, key)
-
-	req, err := http.NewRequest("GET", url, nil)
+	resp, err := http.Get(url)
 	if err != nil {
 		return nil, err
 	}
 
-	req.Header.Set("Content-type", "application/json")
-
-	client := &http.Client{}
-
-	resp, err := client.Do(req)
-	if err != nil {
-		return nil, err
+	if resp.StatusCode != http.StatusOK {
+		return nil, errors.New("Oops, error on get taxes")
 	}
 
 	defer resp.Body.Close()
@@ -67,12 +56,12 @@ func GetTaxes(key string) (*DataTaxe, error) {
 		return nil, err
 	}
 
-	var data *DataTaxe
+	var dataTaxe *DataTaxe
 
-	err = json.Unmarshal(body, &data)
+	err = json.Unmarshal(body, &dataTaxe)
 	if err != nil {
 		return nil, err
 	}
 
-	return data, nil
+	return dataTaxe, nil
 }

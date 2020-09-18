@@ -5,7 +5,6 @@ import "testing"
 const key = ""
 
 func TestGetQuotations(t *testing.T) {
-
 	_, err := GetQuotations(key)
 	if err != nil {
 		t.Error(err)
@@ -14,7 +13,6 @@ func TestGetQuotations(t *testing.T) {
 }
 
 func TestGetTaxes(t *testing.T) {
-
 	_, err := GetTaxes(key)
 	if err != nil {
 		t.Error(err)

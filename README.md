@@ -1,62 +1,43 @@
-# Instalação
+# Installation
 
 ```go 
 go get github.com/lucasmdomingues/gofinance
 ```
 
-# Exemplos
+# Example
 
-### Obter somente cotações de moedas e bolsas.
+### Get only quotes for currencies and exchanges.
 
 ```go
 import (
-	"encoding/json"
 	"fmt"
+	"log"
 	"github.com/lucasmdomingues/gofinance"
 )
 
 func main() {
-
 	quotations, err := gofinance.GetQuotations("KEY")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
-	json, err := json.Marshal(quotations)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Printf("%s\n", json)
 }
 ```
 
-### Obter somente taxas CDI e SELIC.
+### Obtain only CDI and SELIC rates.
 
 ```go
 import (
-	"encoding/json"
 	"fmt"
-	"gofinance"
+	"log"
+	"github.com/lucasmdomingues/gofinance"
 )
 
 func main() {
-
 	taxes, err := gofinance.GetTaxes("KEY")
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
 	}
-
-	json, err := json.Marshal(taxes)
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	fmt.Printf("%s\n", json)
 }
 
 ```
