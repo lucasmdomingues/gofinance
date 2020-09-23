@@ -10,8 +10,23 @@ import (
 
 const URL = "https://api.hgbrasil.com/finance"
 
-func GetQuotations(key string) (*DataQuotation, error) {
-	url := fmt.Sprintf("%s/quotations?key=%s", URL, key)
+type service struct {
+	Key string
+}
+
+type Service interface {
+	GetQuotations() (*DataQuotation, error)
+	GetTaxes() (*DataTaxe, error)
+}
+
+func NewService(key string) Service {
+	return &service{
+		Key: key,
+	}
+}
+
+func (s *service) GetQuotations() (*DataQuotation, error) {
+	url := fmt.Sprintf("%s/quotations?key=%s", URL, s.Key)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -38,8 +53,8 @@ func GetQuotations(key string) (*DataQuotation, error) {
 	return dataQuotation, nil
 }
 
-func GetTaxes(key string) (*DataTaxe, error) {
-	url := fmt.Sprintf("%s/taxes?key=%s", URL, key)
+func (s *service) GetTaxes() (*DataTaxe, error) {
+	url := fmt.Sprintf("%s/taxes?key=%s", URL, s.Key)
 
 	resp, err := http.Get(url)
 	if err != nil {

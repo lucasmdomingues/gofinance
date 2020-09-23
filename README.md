@@ -16,10 +16,11 @@ import (
 )
 
 func main() {
-	quotations, err := gofinance.GetQuotations("KEY")
+	service := gofinance.NewService("KEY")
+
+	quotations, err := service.GetQuotations()
 	if err != nil {
-		fmt.Println(err)
-		return
+		log.Fatal(err)
 	}
 }
 ```
@@ -34,7 +35,9 @@ import (
 )
 
 func main() {
-	taxes, err := gofinance.GetTaxes("KEY")
+	service := gofinance.NewService("KEY")
+
+	taxes, err := service.GetTaxes()
 	if err != nil {
 		log.Fatal(err)
 	}
